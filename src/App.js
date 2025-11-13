@@ -6,16 +6,11 @@ import MainLayout from "./layout/MainLayout";
 import Login from "./pages/Login";
 import NotAuthorized from "./pages/NotAuthorized";
 import { RoutingConfiguration } from "./config/RoutingConfiguration";
-
-// Flatten routes recursively for React Router
-const flattenRoutes = (nodes) =>
-  nodes.flatMap((node) =>
-    node.children ? flattenRoutes(node.children) : node.path ? [node] : []
-  );
+import { flattenRoutes } from "./utils/routeUtils";
 
 const user = {
   name: "John Doe",
-  roles: ["reader", "analyst", "approver"], // test different roles here
+  roles: ["reader", "analyst", "approver"], // change for testing
 };
 
 function App() {
