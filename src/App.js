@@ -1,24 +1,55 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { UserProvider } from "./context/UserContext";
+import ProtectedRoute from "./components/ProtectedRoute";
+import MainLayout from "./layout/MainLayout";
+import Login from "./pages/Login";
+import NotAuthorized from "./pages/NotAuthorized";
+import { RoutingConfiguration } from "./config/RoutingConfiguration";
+
+// Flatten routes recursively for React Router
+const flattenRoutes = (nodes) =>
+  nodes.flatMap((node) =>
+    node.children ? flattenRoutes(node.children) : node.path ? [node] : []
+  );
+
+const user = {
+  name: "John Doe",
+  roles: ["reader", "analyst", "approver"], // test different roles here
+};
 
 function App() {
+  const flatRoutes = flattenRoutes(RoutingConfiguration);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <UserProvider user={user}>
+      <Router>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/not-authorized" element={<NotAuthorized />} />
+
+          {flatRoutes.map((route) => {
+            const Screen = route.component;
+            return (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={
+                  <MainLayout>
+                    <ProtectedRoute
+                      allowedRoles={route.allowedRoles}
+                      actionRoles={route.actionRoles}
+                    >
+                      <Screen />
+                    </ProtectedRoute>
+                  </MainLayout>
+                }
+              />
+            );
+          })}
+        </Routes>
+      </Router>
+    </UserProvider>
   );
 }
 
