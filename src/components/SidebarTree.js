@@ -3,40 +3,22 @@ import { Treebeard } from "react-treebeard";
 import { useNavigate } from "react-router-dom";
 import { RoutingConfiguration } from "../config/RoutingConfiguration";
 import { useUser } from "../context/UserContext";
-import { filterRoutesByRole, buildTreeData } from "../utils/routeUtils";
+import { filterRoutesByRole } from "../utils/routeUtils";
 
 const SidebarTree = () => {
   const navigate = useNavigate();
   const user = useUser();
   const [cursor, setCursor] = useState(null);
-
-
-  const filteredRoutes = filterRoutesByRole(RoutingConfiguration, user.roles);
-  const initialTreeData = buildTreeData(filteredRoutes);
-  const [treeData, setTreeData] = useState(initialTreeData);
-
-  // Helper to update toggled/active state immutably
-  const updateTree = (node, toggledNode) => {
-    if (node === toggledNode) {
-      return {
-        ...node,
-        active: true,
-        toggled: node.children ? !node.toggled : node.toggled,
-      };
-    }
-    if (node.children) {
-      return {
-        ...node,
-        children: node.children.map((child) => updateTree(child, toggledNode)),
-        active: node === toggledNode,
-      };
-    }
-    return { ...node, active: node === toggledNode };
-  };
+  const [data, setData] = useState(() =>
+    filterRoutesByRole(RoutingConfiguration, user.roles)
+  );
 
   const onToggle = (node, toggled) => {
-    setTreeData((prevData) => updateTree(prevData, node));
+    if (cursor) cursor.active = false;
+    node.active = true;
+    if (node.children) node.toggled = toggled;
     setCursor(node);
+    setData([...data]); // force rerender
     if (node.path) navigate(node.path);
   };
 
@@ -50,7 +32,13 @@ const SidebarTree = () => {
         background: "#fafafa",
       }}
     >
-      <Treebeard data={treeData} onToggle={onToggle} />
+      {data.map((tree, index) => (
+        <Treebeard
+          key={index}
+          data={tree}
+          onToggle={onToggle}
+        />
+      ))}
     </div>
   );
 };

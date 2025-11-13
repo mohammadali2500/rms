@@ -7,10 +7,11 @@ import Login from "./pages/Login";
 import NotAuthorized from "./pages/NotAuthorized";
 import { RoutingConfiguration } from "./config/RoutingConfiguration";
 import { flattenRoutes } from "./utils/routeUtils";
+import Home from "./pages/Home";
 
 const user = {
   name: "John Doe",
-  roles: ["reader", "analyst", "approver"], // change for testing
+  roles: ["reader", "analyst", "approver"],
 };
 
 function App() {
@@ -20,6 +21,13 @@ function App() {
     <UserProvider user={user}>
       <Router>
         <Routes>
+          <Route path="/" element={
+            <MainLayout>
+              <ProtectedRoute allowedRoles={["reader", "analyst", "approver"]} actionRoles={[]}>
+                <Home />
+              </ProtectedRoute>
+            </MainLayout>
+          } />
           <Route path="/login" element={<Login />} />
           <Route path="/not-authorized" element={<NotAuthorized />} />
 

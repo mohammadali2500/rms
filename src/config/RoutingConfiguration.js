@@ -2,6 +2,10 @@ import CurrencySetup from "../pages/CurrencySetup";
 import HolidaySetup from "../pages/HolidaySetup";
 import CurrencyReport from "../pages/CurrencyReport";
 import HolidayReport from "../pages/HolidayReport";
+import ProcessA from "../pages/ProcessA";
+import ProcessB from "../pages/ProcessA";
+import DailyReportA from "../pages/DailyReportA";
+import DailyReportB from "../pages/DailyReportA";
 
 export const RoutingConfiguration = [
   {
@@ -12,7 +16,7 @@ export const RoutingConfiguration = [
         children: [
           {
             name: "Currency Setup",
-            path: "/",
+            path: "/configuration/static/currency-setup",
             component: CurrencySetup,
             allowedRoles: ["analyst", "reader"],
             actionRoles: ["analyst"],
@@ -40,6 +44,49 @@ export const RoutingConfiguration = [
             name: "Holiday Report",
             path: "/configuration/report/holiday-report",
             component: HolidayReport,
+            allowedRoles: ["approver", "reader"],
+            actionRoles: ["approver"],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: "Daily",
+    children: [
+      {
+        name: "Process",
+        children: [
+          {
+            name: "Process A",
+            path: "/daily/process/a",
+            component: ProcessA,
+            allowedRoles: ["analyst", "reader"],
+            actionRoles: ["analyst"],
+          },
+          {
+            name: "Process B",
+            path: "/daily/process/b",
+            component: ProcessA,
+            allowedRoles: ["analyst", "reader"],
+            actionRoles: ["analyst"],
+          },
+        ],
+      },
+      {
+        name: "Daily Report",
+        children: [
+          {
+            name: "Daily Report A",
+            path: "/daily/report/a",
+            component: DailyReportA,
+            allowedRoles: ["approver", "reader"],
+            actionRoles: ["approver"],
+          },
+          {
+            name: "Daily Report B",
+            path: "/daily/report/b",
+            component: DailyReportA,
             allowedRoles: ["approver", "reader"],
             actionRoles: ["approver"],
           },
