@@ -1,11 +1,11 @@
 import React from "react";
 
-const HolidaySetup = ({ isReadOnly }) => (
+const Holiday = ({ isReadOnly }) => (
   <div>
-    <h2>Holiday Setup</h2>
+    <h2>Holiday</h2>
     <p>Accessible to Analyst and Reader.</p>
     <button disabled={isReadOnly}>Save</button>
   </div>
 );
 
-export default HolidaySetup;
+export default Holiday;

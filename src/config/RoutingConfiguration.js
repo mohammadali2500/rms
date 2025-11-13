@@ -1,5 +1,5 @@
-import CurrencySetup from "../pages/CurrencySetup";
-import HolidaySetup from "../pages/HolidaySetup";
+import Currency from "../pages/Currency";
+import Holiday from "../pages/Holiday";
 import CurrencyReport from "../pages/CurrencyReport";
 import HolidayReport from "../pages/HolidayReport";
 import ProcessA from "../pages/ProcessA";
@@ -15,16 +15,16 @@ export const RoutingConfiguration = [
         name: "Static",
         children: [
           {
-            name: "Currency Setup",
+            name: "Currency",
             path: "/configuration/static/currency-setup",
-            component: CurrencySetup,
+            component: Currency,
             allowedRoles: ["analyst", "reader"],
             actionRoles: ["analyst"],
           },
           {
-            name: "Holiday Setup",
+            name: "Holiday",
             path: "/configuration/static/holiday-setup",
-            component: HolidaySetup,
+            component: Holiday,
             allowedRoles: ["analyst", "reader"],
             actionRoles: ["analyst"],
           },
