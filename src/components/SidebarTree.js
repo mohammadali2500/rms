@@ -18,7 +18,7 @@ const SidebarTree = () => {
     node.active = true;
     if (node.children) node.toggled = toggled;
     setCursor(node);
-    setData([...data]); // force rerender
+    setData([...data]);
     if (node.path) navigate(node.path);
   };
 

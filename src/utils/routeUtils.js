@@ -21,10 +21,3 @@ export const filterRoutesByRole = (nodes, roles) => {
     })
     .filter(Boolean);
 };
-
-// wrap data for react-treebeard
-export const buildTreeData = (filteredRoutes) => ({
-  name: "Menu",
-  toggled: true,
-  children: filteredRoutes,
-});

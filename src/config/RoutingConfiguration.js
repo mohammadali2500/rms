@@ -16,14 +16,14 @@ export const RoutingConfiguration = [
         children: [
           {
             name: "Currency",
-            path: "/configuration/static/currency-setup",
+            path: "/currency",
             component: Currency,
             allowedRoles: ["analyst", "reader"],
             actionRoles: ["analyst"],
           },
           {
             name: "Holiday",
-            path: "/configuration/static/holiday-setup",
+            path: "/holiday",
             component: Holiday,
             allowedRoles: ["analyst", "reader"],
             actionRoles: ["analyst"],
@@ -35,14 +35,14 @@ export const RoutingConfiguration = [
         children: [
           {
             name: "Currency Report",
-            path: "/configuration/report/currency-report",
+            path: "/currency-report",
             component: CurrencyReport,
             allowedRoles: ["approver", "reader"],
             actionRoles: ["approver"],
           },
           {
             name: "Holiday Report",
-            path: "/configuration/report/holiday-report",
+            path: "/holiday-report",
             component: HolidayReport,
             allowedRoles: ["approver", "reader"],
             actionRoles: ["approver"],
