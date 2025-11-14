@@ -1,15 +1,19 @@
-import React from "react";
+// src/routes/ProtectedRoute.js
 import { Navigate } from "react-router-dom";
-import { useUser } from "../context/UserContext";
 
-const ProtectedRoute = ({ allowedRoles, actionRoles, children }) => {
-  const user = useUser();
+const ProtectedRoute = ({ element: Component, userRoles, allowedRoles, actionRoles }) => {
+  const canView = allowedRoles.some(r => userRoles.includes(r));
 
-  const hasAccess = allowedRoles.some((r) => user.roles.includes(r));
-  if (!hasAccess) return <Navigate to="/not-authorized" replace />;
+  if (!canView) {
+    return <Navigate to="/unauthorized" replace />;
+  }
 
-  const isReadOnly = !actionRoles.some((r) => user.roles.includes(r));
-  return React.cloneElement(children, { isReadOnly });
+  // Read-only mode logic
+  const isReadOnly = actionRoles
+    ? !actionRoles.some(role => userRoles.includes(role))
+    : false;
+
+  return <Component userRoles={userRoles} isReadOnly={isReadOnly} />;
 };
 
 export default ProtectedRoute;

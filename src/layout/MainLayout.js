@@ -1,5 +1,5 @@
 import React from "react";
-import SidebarTree from "../components/SidebarTree";
+import SidebarTree from "../components/Sidebar";
 import Header from "../components/Header";
 
 

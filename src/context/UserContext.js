@@ -1,9 +1,14 @@
-import React, { createContext, useContext } from "react";
+// src/context/UserContext.js
 
-const UserContext = createContext();
+import { createContext, useContext } from "react";
 
-export const UserProvider = ({ user, children }) => (
-  <UserContext.Provider value={user}>{children}</UserContext.Provider>
-);
+export const UserContext = createContext(null);
+
+export const UserProvider = ({ children }) => {
+  // Example: dynamic roles from SSO / API
+  const user = { roles: ["reader","analyst"] };
+
+  return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
+};
 
 export const useUser = () => useContext(UserContext);
