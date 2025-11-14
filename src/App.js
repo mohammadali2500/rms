@@ -1,59 +1,54 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { UserProvider } from "./context/UserContext";
-import ProtectedRoute from "./components/ProtectedRoute";
-import MainLayout from "./layout/MainLayout";
-import Login from "./pages/Login";
-import NotAuthorized from "./pages/NotAuthorized";
-import { RoutingConfiguration } from "./config/RoutingConfiguration";
-import { flattenRoutes } from "./utils/routeUtils";
-import Home from "./pages/Home";
+// src/App.js
 
-const user = {
-  name: "John Doe",
-  roles: ["reader", "analyst", "approver"],
-};
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { UserProvider, useUser } from "./context/UserContext";
+import Sidebar from "./menu/Sidebar";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import { RouteConfig } from "./routes/RouteConfig";
+import Unauthorized from "./screens/Unauthorized";
 
-function App() {
-  const flatRoutes = flattenRoutes(RoutingConfiguration);
+const AppContent = () => {
+  const { roles: userRoles } = useUser();
 
   return (
-    <UserProvider user={user}>
-      <Router>
-        <Routes>
-          <Route path="/" element={
-            <MainLayout>
-              <ProtectedRoute allowedRoles={["reader", "analyst", "approver"]} actionRoles={[]}>
-                <Home />
-              </ProtectedRoute>
-            </MainLayout>
-          } />
-          <Route path="/login" element={<Login />} />
-          <Route path="/not-authorized" element={<NotAuthorized />} />
+    <div style={{ display: "flex" }}>
+      <Sidebar />
 
-          {flatRoutes.map((route) => {
-            const Screen = route.component;
-            return (
-              <Route
-                key={route.path}
-                path={route.path}
-                element={
-                  <MainLayout>
-                    <ProtectedRoute
-                      allowedRoles={route.allowedRoles}
-                      actionRoles={route.actionRoles}
-                    >
-                      <Screen />
-                    </ProtectedRoute>
-                  </MainLayout>
-                }
-              />
-            );
-          })}
+      <div style={{ flex: 1, padding: 20 }}>
+        <Routes>
+          {RouteConfig.map(route => (
+            <Route
+              key={route.id}
+              path={route.path}
+              element={
+                <ProtectedRoute
+                  element={route.component}
+                  userRoles={userRoles}
+                  allowedRoles={route.allowedRoles}
+                  actionRoles={route.actionRoles}
+                />
+              }
+            />
+          ))}
+
+          <Route path="/unauthorized" element={<Unauthorized />} />
+
+          <Route
+            path="*"
+            element={<Navigate to="/configuration/static/currency-setup" />}
+          />
         </Routes>
-      </Router>
-    </UserProvider>
+      </div>
+    </div>
   );
-}
+};
+
+const App = () => (
+  <UserProvider>
+    <BrowserRouter>
+      <AppContent />
+    </BrowserRouter>
+  </UserProvider>
+);
 
 export default App;
